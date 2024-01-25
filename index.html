@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Task Manager</title>
+    <style>
+ body {
+    display: flex;
+   justify-content: center;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+#taskContainer {
+   height: 420px;
+    width:40%;
+    border: 1px solid black;
+}
+
+#taskForm {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input, textarea, button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.taskItem {
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.taskItem button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
+
+    </style>
+</head>
+<body>
+    <div id="taskContainer">
+        <div id="taskForm">
+            <label for="taskTitle">Title *</label>
+            <input type="text" id="taskTitle" required>
+
+            <label for="taskDescription">Description</label>
+            <textarea id="taskDescription"></textarea>
+
+            <label for="taskDate">Date *</label>
+            <input type="date" id="taskDate" min="" required>
+
+            <button onclick="addTask()">Add Task</button>
+        </div>
+
+        <div id="taskList"></div>
+    </div>
+
+    <script>
+       function addTask() {
+   
+    const title = document.getElementById('taskTitle').value;
+    const description = document.getElementById('taskDescription').value;
+    const date = document.getElementById('taskDate').value;
+
+    
+    if (!title || !date) {
+        alert("Title and date are mandatory fields");
+        return;
+    }
+    const newTask = {
+        title: title,
+        description: description,
+        date: date
+    };
+  
+    appendTask(newTask);
+  
+    document.getElementById('taskTitle').value = '';
+    document.getElementById('taskDescription').value = '';
+    document.getElementById('taskDate').value = '';
+    updateMinDate();
+}
+function appendTask(task) {
+    const taskElement = document.createElement('div');
+    taskElement.classList.add('taskItem');
+    taskElement.innerHTML = `
+        <p><strong>Title:</strong> ${task.title}</p>
+        <p><strong>Description:</strong> ${task.description || 'N/A'}</p>
+        <p><strong>Date:</strong> ${task.date}</p>
+        <button onclick="deleteTask(this)">Delete</button>
+    `;
+    document.getElementById('taskList').appendChild(taskElement);
+}
+function deleteTask(deleteButton) {
+    const taskItem = deleteButton.parentElement;
+    taskItem.remove();
+   
+}
+ </script>
+</body>
+</html>
